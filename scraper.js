@@ -96,9 +96,13 @@ async function run() {
 
     // Сохраняем данные в CSV-файл
     const csvData = products
-      .map((product) => `${product.name},${product.price}`)
+      .map(
+        (product) =>
+          `${product.name.replace(/\s*\[.*?\]/g, "")},${product.price}`
+      )
       .join("\n");
-    fs.writeFileSync("output.csv", "Name,Price\n" + csvData, "utf-8");
+    const csvWithHeaders = `Имя,Цена\n${csvData}`;
+    fs.writeFileSync("output.csv", csvWithHeaders, "utf-8");
 
     console.log("Scraping completed. Data saved to output.csv");
   } catch (error) {
