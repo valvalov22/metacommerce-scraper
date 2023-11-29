@@ -85,9 +85,17 @@ async function run() {
       const nameElement = $(element).find(".catalog-product__name span");
       const priceElement = $(element).find(".product-buy__price");
 
-      // Извлекаем текст из элементов
+      // Удаляем span с его содержимым
+      nameElement.find("span").remove();
+
       const name = nameElement.text().trim();
-      const price = priceElement.text().trim();
+      const price = priceElement
+        .contents()
+        .filter(function () {
+          return this.nodeType === 3;
+        })
+        .text()
+        .trim();
 
       if (name && price) {
         products.push({ name, price });
